@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoinTransfer — Admin Console</title>
+<meta name="description" content="CoinTransfer — manage coin suppliers, client orders and payouts from one console.">
+<link rel="icon" href="./logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div class="login-wrap" id="loginScreen">
+  <form class="login-card" id="loginForm" autocomplete="off">
+    <div class="login-logo">
+      <img src="./logo.svg" alt="CoinTransfer">
+      <span>CoinTransfer</span>
+    </div>
+    <p class="login-sub">Sign in to the transfer console</p>
+    <div class="field">
+      <label for="loginUser">Username</label>
+      <input id="loginUser" type="text" placeholder="your username" autocomplete="username">
+    </div>
+    <div class="field">
+      <label for="loginPass">Password</label>
+      <input id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <div class="login-err" id="loginErr"></div>
+    <button class="btn btn-gold btn-block" type="submit">Sign in</button>
+    <div class="login-hint">
+      Accounts are issued by the administrator — there is no self sign-up.
+      <br><a id="seedAdmin" style="color:var(--gold);cursor:pointer">Use default admin</a>
+    </div>
+  </form>
+</div>
+
+<!-- ============ APP ============ -->
+<div class="app" id="app">
+  <div class="scrim" id="scrim"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-logo">
+      <img src="./logo.svg" alt="">
+      <b>CoinTransfer</b>
+    </div>
+    <nav class="sb-nav" id="nav"></nav>
+    <div class="sb-foot">v1.0 · admin console</div>
+  </aside>
+
+  <div class="main">
+    <header class="header">
+      <button class="btn btn-ghost btn-icon hamburger" id="hamburger" title="Menu"></button>
+      <div class="page-title" id="pageTitle">Senders</div>
+      <div class="hd-right">
+        <div class="balance-chip" id="balance" title="Platform fees earned">$0.00</div>
+        <button class="btn btn-ghost btn-icon" id="themeBtn" title="Toggle theme"></button>
+        <div class="avatar" id="avatar" title="Account">A</div>
+        <button class="btn btn-ghost btn-icon" id="logoutBtn" title="Sign out">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ---------- SENDERS ---------- -->
+      <section class="page" id="page-senders">
+        <div class="grid grid-3" id="stats" style="margin-bottom:22px"></div>
+        <div class="toolbar">
+          <button class="btn btn-gold" id="addSenderBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            Add supplier
+          </button>
+          <button class="btn btn-ghost" id="exportSenders">Export CSV</button>
+          <div class="spacer"></div>
+          <div class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="senderSearch" type="text" placeholder="Search suppliers…">
+          </div>
+        </div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table>
+              <thead><tr>
+                <th>ID</th><th>Supplier</th><th>Platform</th><th>Account</th><th>Group</th>
+                <th>Stock</th><th>Taken</th><th>Status</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="senderRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- ORDERS ---------- -->
+      <section class="page" id="page-orders">
+        <div class="grid grid-3" id="orderStats" style="margin-bottom:22px"></div>
+        <div class="toolbar">
+          <button class="btn btn-gold" id="addOrderBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            New order
+          </button>
+          <div class="tabs" id="orderTabs">
+            <div class="tab active" data-f="all">All</div>
+            <div class="tab" data-f="pending">Pending</div>
+            <div class="tab" data-f="processing">Processing</div>
+            <div class="tab" data-f="done">Done</div>
+          </div>
+          <button class="btn btn-ghost" id="exportOrders">Export CSV</button>
+          <div class="spacer"></div>
+          <div class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="orderSearch" type="text" placeholder="Search orders…">
+          </div>
+        </div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table>
+              <thead><tr>
+                <th>Order</th><th>Client</th><th>Platform</th><th>Coins</th><th>Rate</th>
+                <th>Total</th><th>Progress</th><th>Network</th><th>Status</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="orderRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- ADMIN ---------- -->
+      <section class="page" id="page-admin">
+        <div class="section">
+          <div class="section-head"><h2><span class="dot"></span>Payment networks</h2><div class="rule"></div></div>
+          <div id="adminNetworks"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><h2><span class="dot"></span>Platform configuration</h2><div class="rule"></div></div>
+          <div class="card" id="adminConfig"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><h2><span class="dot"></span>Console accounts</h2><div class="rule"></div>
+            <button class="btn btn-gold btn-sm" id="addUser">Generate account</button>
+          </div>
+          <div class="table-wrap">
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>
+                <tbody id="userRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<div class="toasts" id="toasts"></div>
+
+<script src="./app.js"></script>
+</body>
+</html>
