@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CoinTransfer — Admin Console</title>
-<meta name="description" content="CoinTransfer — manage coin suppliers, client orders and payouts from one console.">
+<title>CoinTransfer — Transfer Console</title>
+<meta name="description" content="CoinTransfer — move FC coins safely from supplier accounts to client orders. Transfers only.">
 <link rel="icon" href="./logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,15 +48,15 @@
       <b>CoinTransfer</b>
     </div>
     <nav class="sb-nav" id="nav"></nav>
-    <div class="sb-foot">v1.0 · admin console</div>
+    <div class="sb-foot">Transfers only · no coins sold</div>
   </aside>
 
   <div class="main">
     <header class="header">
       <button class="btn btn-ghost btn-icon hamburger" id="hamburger" title="Menu"></button>
-      <div class="page-title" id="pageTitle">Senders</div>
+      <div class="page-title" id="pageTitle">Orders</div>
       <div class="hd-right">
-        <div class="balance-chip" id="balance" title="Platform fees earned">$0.00</div>
+        <div class="balance-chip" id="balance" title="Your balance">$0.00</div>
         <button class="btn btn-ghost btn-icon" id="themeBtn" title="Toggle theme"></button>
         <div class="avatar" id="avatar" title="Account">A</div>
         <button class="btn btn-ghost btn-icon" id="logoutBtn" title="Sign out">
@@ -67,47 +67,20 @@
 
     <main class="content">
 
-      <!-- ---------- SENDERS ---------- -->
-      <section class="page" id="page-senders">
-        <div class="grid grid-3" id="stats" style="margin-bottom:22px"></div>
-        <div class="toolbar">
-          <button class="btn btn-gold" id="addSenderBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-            Add supplier
-          </button>
-          <button class="btn btn-ghost" id="exportSenders">Export CSV</button>
-          <div class="spacer"></div>
-          <div class="search">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            <input id="senderSearch" type="text" placeholder="Search suppliers…">
-          </div>
-        </div>
-        <div class="table-wrap">
-          <div class="table-scroll">
-            <table>
-              <thead><tr>
-                <th>ID</th><th>Supplier</th><th>Platform</th><th>Account</th><th>Group</th>
-                <th>Stock</th><th>Taken</th><th>Status</th><th>Actions</th>
-              </tr></thead>
-              <tbody id="senderRows"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
       <!-- ---------- ORDERS ---------- -->
       <section class="page" id="page-orders">
         <div class="grid grid-3" id="orderStats" style="margin-bottom:22px"></div>
         <div class="toolbar">
           <button class="btn btn-gold" id="addOrderBtn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-            New order
+            Add order
           </button>
           <div class="tabs" id="orderTabs">
             <div class="tab active" data-f="all">All</div>
             <div class="tab" data-f="pending">Pending</div>
-            <div class="tab" data-f="processing">Processing</div>
-            <div class="tab" data-f="done">Done</div>
+            <div class="tab" data-f="active">Transferring</div>
+            <div class="tab" data-f="done">Completed</div>
+            <div class="tab" data-f="nosender">No sender</div>
           </div>
           <button class="btn btn-ghost" id="exportOrders">Export CSV</button>
           <div class="spacer"></div>
@@ -120,8 +93,8 @@
           <div class="table-scroll">
             <table>
               <thead><tr>
-                <th>Order</th><th>Client</th><th>Platform</th><th>Coins</th><th>Rate</th>
-                <th>Total</th><th>Progress</th><th>Network</th><th>Status</th><th>Actions</th>
+                <th>Order</th><th>Client account</th><th>Coins from</th><th>Start</th><th>End</th>
+                <th>Tax</th><th>Status</th><th>Progress</th><th>Payout</th><th>Actions</th>
               </tr></thead>
               <tbody id="orderRows"></tbody>
             </table>
@@ -129,15 +102,92 @@
         </div>
       </section>
 
+      <!-- ---------- SENDERS ---------- -->
+      <section class="page" id="page-senders">
+        <div class="grid grid-3" id="senderStats" style="margin-bottom:22px"></div>
+        <div class="toolbar">
+          <button class="btn btn-gold" id="addSenderBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            Add sender
+          </button>
+          <button class="btn btn-ghost" id="exportSenders">Export CSV</button>
+          <div class="spacer"></div>
+          <div class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="senderSearch" type="text" placeholder="Search senders…">
+          </div>
+        </div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table>
+              <thead><tr>
+                <th>ID</th><th>Account</th><th>Platform</th><th>Group</th><th>Priority</th>
+                <th>Take</th><th>Keep</th><th>Coins</th><th>Taken</th><th>Status</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="senderRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- FUNDS ---------- -->
+      <section class="page" id="page-funds">
+        <div class="grid grid-3" id="fundStats" style="margin-bottom:22px"></div>
+
+        <div class="section">
+          <div class="section-head"><h2><span class="dot"></span>Add funds</h2><div class="rule"></div></div>
+          <div class="card funds-card">
+            <div class="alert-row warn">
+              <span class="alert-ico">!</span>
+              <div><b>Addresses can change over time</b><span>Copy the address carefully before sending.</span></div>
+            </div>
+            <div class="alert-row danger">
+              <span class="alert-ico">!</span>
+              <div><b>Flagged addresses will be rejected</b><span>Sanctioned exchange deposits are not supported.</span></div>
+            </div>
+            <div id="fundNetworks" class="net-list"></div>
+            <form id="addFundsForm" class="form">
+              <div class="field">
+                <label>USDT amount to reserve</label>
+                <div class="inputrow">
+                  <input id="usdtAmount" type="number" step="0.01" min="0" placeholder="0.00">
+                  <button class="btn btn-gold" type="submit">Reserve</button>
+                </div>
+                <div class="hint">A reservation is created immediately — send the USDT to the address above and the balance is credited after confirmation.</div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><h2><span class="dot"></span>Payment history</h2><div class="rule"></div></div>
+          <div class="table-wrap">
+            <div class="table-scroll">
+              <table>
+                <thead><tr>
+                  <th>ID</th><th>USD</th><th>EUR</th><th>Timestamp</th><th>Method</th><th>Chain</th><th>TxID</th><th>Actions</th>
+                </tr></thead>
+                <tbody id="payRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- ---------- ADMIN ---------- -->
       <section class="page" id="page-admin">
+        <div class="section">
+          <div class="section-head"><h2><span class="dot"></span>Transfer rate</h2><div class="rule"></div></div>
+          <div id="adminRate"></div>
+        </div>
+
         <div class="section">
           <div class="section-head"><h2><span class="dot"></span>Payment networks</h2><div class="rule"></div></div>
           <div id="adminNetworks"></div>
         </div>
 
         <div class="section">
-          <div class="section-head"><h2><span class="dot"></span>Platform configuration</h2><div class="rule"></div></div>
+          <div class="section-head"><h2><span class="dot"></span>Rates &amp; platform</h2><div class="rule"></div></div>
           <div class="card" id="adminConfig"></div>
         </div>
 
@@ -148,7 +198,7 @@
           <div class="table-wrap">
             <div class="table-scroll">
               <table>
-                <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>
+                <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Balance</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>
                 <tbody id="userRows"></tbody>
               </table>
             </div>
