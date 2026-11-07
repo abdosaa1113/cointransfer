@@ -49,10 +49,10 @@ const defaultUsers = [
   { id:'u_admin', username:'admin', password:'admin123', name:'Administrator', role:'admin', active:true, created: Date.now() }
 ];
 const defaultSenders = [
-  { id:'s1', label:'Supplier A', account:'range-a@cointransfer', platform:'ps',   stock: 2450000, taken: 320000, group:'Alpha', priority:1, status:'active',  take:0,   keep:0,    createdAt: Date.now()-86400000*12 },
-  { id:'s2', label:'Supplier B', account:'range-b@cointransfer', platform:'xbox', stock: 1180000, taken: 145000, group:'Alpha', priority:2, status:'active',  take:0,   keep:0,    createdAt: Date.now()-86400000*9 },
-  { id:'s3', label:'Supplier C', account:'range-c@cointransfer', platform:'pc',   stock: 760000,  taken: 240000, group:'Beta',  priority:1, status:'disabled',take:50000,keep:10000, createdAt: Date.now()-86400000*6 },
-  { id:'s4', label:'Supplier D', account:'range-d@cointransfer', platform:'ps',   stock: 3400000, taken: 610000, group:'Beta',  priority:3, status:'active',  take:0,   keep:20000, createdAt: Date.now()-86400000*3 }
+  { id:'S-001', label:'Supplier A', account:'range-a@cointransfer', platform:'ps',   stock: 2450000, taken: 320000, group:'Alpha', priority:1, status:'active',  take:0,   keep:0,    createdAt: Date.now()-86400000*12 },
+  { id:'S-002', label:'Supplier B', account:'range-b@cointransfer', platform:'xbox', stock: 1180000, taken: 145000, group:'Alpha', priority:2, status:'active',  take:0,   keep:0,    createdAt: Date.now()-86400000*9 },
+  { id:'S-003', label:'Supplier C', account:'range-c@cointransfer', platform:'pc',   stock: 760000,  taken: 240000, group:'Beta',  priority:1, status:'disabled',take:50000,keep:10000, createdAt: Date.now()-86400000*6 },
+  { id:'S-004', label:'Supplier D', account:'range-d@cointransfer', platform:'ps',   stock: 3400000, taken: 610000, group:'Beta',  priority:3, status:'active',  take:0,   keep:20000, createdAt: Date.now()-86400000*3 }
 ];
 const defaultOrders = [
   { id:'ORD-10241', client:'Client 001', platform:'ps',   amount: 500000, price: 6.90, status:'done',       network:'trc20', sent: 500000, when: Date.now()-3600e3*26 },
@@ -243,7 +243,7 @@ function senderModal(id){
         status: $('#f_active').checked ? 'active':'disabled'
       };
       if (s) Object.assign(s, data);
-      else { const n = DB.senders.length + 1; DB.senders.push(Object.assign({ id:'S-'+String(n).padStart(3,'0'), createdAt:Date.now() }, data)); }
+      else { const nums = DB.senders.map(x=>parseInt(String(x.id).replace(/\D/g,''),10)).filter(n=>!isNaN(n)); const n=(nums.length?Math.max(...nums):0)+1; DB.senders.push(Object.assign({ id:'S-'+String(n).padStart(3,'0'), createdAt:Date.now() }, data)); }
       save(); renderSenders(); toast(s?'Supplier updated':'Supplier added','ok');
       return true;
     }
