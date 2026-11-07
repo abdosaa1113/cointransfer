@@ -302,3 +302,102 @@ html[data-theme="light"] .net-addr { background: var(--card-2); }
 .net-addr .copy svg { width: 16px; height: 16px; }
 
 .section-head h2 .dot { display:inline-block; width:7px; height:7px; border-radius:50%; background: var(--gold); margin-right:9px; vertical-align: middle; }
+
+/* ---------- action list (named + explained) ---------- */
+.actlist { display: flex; flex-direction: column; gap: 8px; }
+.actitem {
+  display: flex; align-items: center; gap: 13px; text-align: left; width: 100%;
+  background: var(--bg-2); border: 1px solid var(--border); border-radius: 11px;
+  padding: 12px 14px; transition: border-color .16s, background .16s, transform .12s;
+}
+html[data-theme="light"] .actitem { background: var(--card-2); }
+.actitem:hover { border-color: rgba(230,169,43,.5); background: var(--card-hover); transform: translateX(2px); }
+.acticon {
+  width: 36px; height: 36px; flex-shrink: 0; border-radius: 9px;
+  background: var(--gold-soft); color: var(--gold); display: flex; align-items: center; justify-content: center;
+}
+.acticon svg { width: 17px; height: 17px; }
+.acttext { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.acttext b { font-size: 13.5px; font-weight: 700; }
+.acttext small { font-size: 11.5px; color: var(--dim); line-height: 1.35; }
+
+/* ---------- funds page ---------- */
+.funds-card { display: flex; flex-direction: column; gap: 18px; }
+.alert-row { display: flex; align-items: flex-start; gap: 13px; padding: 13px 15px; border-radius: 11px; font-size: 13px; }
+.alert-row b { display: block; font-size: 13.5px; margin-bottom: 2px; }
+.alert-row span:not(.alert-ico) { color: var(--muted); font-size: 12.5px; }
+.alert-ico {
+  width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px;
+}
+.alert-row.warn { background: rgba(245,158,11,.10); border: 1px solid rgba(245,158,11,.28); }
+.alert-row.warn .alert-ico { background: rgba(245,158,11,.2); color: #fbbf24; }
+.alert-row.danger { background: rgba(239,68,68,.09); border: 1px solid rgba(239,68,68,.28); }
+.alert-row.danger .alert-ico { background: rgba(239,68,68,.18); color: #ff8080; }
+.net-list { display: flex; flex-direction: column; gap: 9px; }
+.net-addr-row {
+  display: flex; align-items: center; gap: 12px; background: var(--bg-2);
+  border: 1px solid var(--border); border-radius: 11px; padding: 12px 14px;
+}
+html[data-theme="light"] .net-addr-row { background: var(--card-2); }
+.net-addr-row .tag { flex-shrink: 0; }
+.net-addr-row .mono { flex: 1; font-size: 12.5px; word-break: break-all; }
+.inputrow { display: flex; gap: 10px; }
+.inputrow input { flex: 1; }
+
+/* ---------- rate box ---------- */
+.ratebox {
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  background: linear-gradient(135deg, rgba(230,169,43,.10), transparent 70%), var(--card);
+  border: 1px solid rgba(230,169,43,.35); border-radius: var(--radius); padding: 22px;
+}
+.ratebox > div:first-child { flex: 1; min-width: 220px; }
+.ratelabel { font-size: 12px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); }
+.ratevalue { font-size: 32px; font-weight: 800; letter-spacing: -1px; color: var(--gold); margin: 6px 0 4px; }
+.ratevalue small { font-size: 14px; font-weight: 600; color: var(--muted); letter-spacing: 0; }
+.wrap { word-break: break-all; max-width: 55%; text-align: right; font-weight: 500; color: var(--muted); }
+.muted { color: var(--muted); }
+.truncate { max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: bottom; }
+.kvs { max-height: 300px; overflow-y: auto; }
+
+/* ---------- payout box inside order modal ---------- */
+.payout.box {
+  margin-top: 16px; background: var(--gold-soft); border: 1px dashed rgba(230,169,43,.45);
+  border-radius: 11px; padding: 14px 16px; display: flex; flex-direction: column; gap: 3px;
+}
+.payout.box > div { display: flex; justify-content: space-between; align-items: baseline; }
+.payout.box span { font-size: 12.5px; color: var(--muted); font-weight: 600; }
+.payout.box b { font-size: 22px; font-weight: 800; color: var(--gold); letter-spacing: -.5px; }
+.payout.box small { font-size: 11.5px; color: var(--muted); }
+.checks { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 14px; }
+
+/* ---------- saved clients in order modal ---------- */
+.tabs.mini { margin-bottom: 14px; }
+.savedpane { margin-bottom: 14px; }
+.savedlist { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-height: 170px; overflow-y: auto; }
+.savedrow {
+  text-align: left; background: var(--bg-2); border: 1px solid var(--border); border-radius: 9px;
+  padding: 10px 12px; font-size: 12.5px; color: var(--text); transition: border-color .16s, background .16s;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+html[data-theme="light"] .savedrow { background: var(--card-2); }
+.savedrow:hover { border-color: var(--gold); background: var(--card-hover); }
+
+/* ---------- split list ---------- */
+.splitbox { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; }
+.splitrow {
+  display: flex; align-items: center; gap: 11px; background: var(--bg-2);
+  border: 1px solid var(--border); border-radius: 9px; padding: 11px 13px; font-size: 12.5px;
+}
+html[data-theme="light"] .splitrow { background: var(--card-2); }
+.splitrow span { font-family: 'JetBrains Mono', monospace; color: var(--gold); font-weight: 600; }
+.splitrow b { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.splitrow small { color: var(--dim); }
+
+.rowacts { display: flex; gap: 6px; }
+
+@media (max-width: 640px) {
+  .inputrow { flex-direction: column; }
+  .savedlist { grid-template-columns: 1fr; }
+  .wrap { max-width: 100%; text-align: left; }
+}
